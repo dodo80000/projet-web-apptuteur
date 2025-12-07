@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow p-4" style="width: 380px;">
+
+        <h2 class="text-center mb-4 text-primary">Connexion</h2>
+
+        {% if logout %}
+            <div class="alert alert-success">{{ logout }}</div>
+        {% endif %}
+        
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('login_form') }}">
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email du tuteur :</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe :</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            Se connecter
+        </button>
+    </form>
+
+    </div>
+</div>
+
+{% endblock %}

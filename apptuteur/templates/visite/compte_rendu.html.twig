@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container py-4">
+
+    <h1 class="text-primary">Compte-rendu de la visite</h1>
+    <div class="text-center my-2 ">
+        <a href="{{ path('visites_compte_rendu_pdf', { id: visite.id }) }}" 
+           class="btn btn-outline-danger">
+            📄 Exporter en PDF
+        </a>
+    </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <p><strong>Étudiant :</strong> {{ visite.etudiant.prenom }} {{ visite.etudiant.nom }}</p>
+
+            <p><strong>Date :</strong> 
+                {{ visite.date|date('d/m/Y H:i') }}
+            </p>
+
+            <p><strong>Commentaire initial :</strong><br>
+                {{ visite.commentaire }}
+            </p>
+
+            <p><strong>Statut :</strong>
+                <span class="badge 
+                    {% if visite.statut == 'prévue' %} bg-warning 
+                    {% elseif visite.statut == 'réalisée' %} bg-success 
+                    {% else %} bg-danger {% endif %}
+                ">
+                    {{ visite.statut }}
+                </span>
+            </p>
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <form method="POST" class="row g-3">
+
+                <div class="col-12">
+                    <label class="form-label">Compte-rendu :</label>
+                    <textarea name="compteRendu" class="form-control" rows="6">
+                        {{ visite.compteRendu }}
+                    </textarea>
+                </div>
+
+                <div class="col-12 mt-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Enregistrer
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+{% endblock %}

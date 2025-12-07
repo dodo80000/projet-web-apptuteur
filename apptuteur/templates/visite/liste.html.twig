@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1 class="mb-3">Visites de {{ etudiant.prenom }} {{ etudiant.nom }}</h1>
+
+<a href="{{ path('visites_ajouter', { id: etudiant.id }) }}" class="btn btn-success mb-3">Ajouter une visite</a>
+
+<div class="mb-3 d-flex align-items-center gap-3">
+
+    <form method="get" class="d-flex">
+        <select name="statut" class="form-select w-auto" onchange="this.form.submit()">
+            <option value="toutes" {{ statut == 'toutes' ? 'selected' }}>Toutes</option>
+            <option value="prévue" {{ statut == 'prévue' ? 'selected' }}>Prévue</option>
+            <option value="réalisée" {{ statut == 'réalisée' ? 'selected' }}>Réalisée</option>
+            <option value="annulée" {{ statut == 'annulée' ? 'selected' }}>Annulée</option>
+        </select>
+    </form>
+
+    <div class="d-flex gap-2">
+        <a href="{{ path('visites_etudiant', { id: etudiant.id, tri: 'asc', statut: statut }) }}"
+           class="btn btn-outline-primary btn-sm">
+            Trier par date (croissant)
+        </a>
+
+        <a href="{{ path('visites_etudiant', { id: etudiant.id, tri: 'desc', statut: statut }) }}"
+           class="btn btn-outline-primary btn-sm">
+            Trier par date (décroissant)
+        </a>
+    </div>
+
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-secondary">
+        <tr>
+            <th>Date</th>
+            <th>Commentaire</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for v in visites %}
+        <tr>
+            <td>{{ v.date|date('d/m/Y') }}</td>
+            <td>{{ v.commentaire }}</td>
+            <td>{{ v.statut }}</td>
+            <td class="d-flex gap-2">
+                <a href="{{ path('visites_modifier', { id: v.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
+                <a href="{{ path('visites_compte_rendu', { id: v.id }) }}" class="btn btn-warning btn-sm">Compte-rendu</a>
+                <a href="{{ path('visites_compte_rendu_pdf', { id: v.id }) }}" class="btn btn-danger btn-sm" target="_blank">PDF</a>
+
+                <a href="#"
+                   class="btn btn-outline-danger btn-sm btn-delete-visite"
+                   data-url="{{ path('visites_supprimer', { id: v.id, _token: csrf_token('delete_visite_' ~ v.id) }) }}">
+                    Supprimer
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4" class="text-center text-muted">Aucune visite.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.querySelectorAll('.btn-delete-visite');
+            buttons.forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var url = this.getAttribute('data-url');
+
+                    Swal.fire({
+                        title: 'Supprimer cette visite ?',
+                        text: 'Cette action est irréversible.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Oui, supprimer',
+                        cancelButtonText: 'Annuler'
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

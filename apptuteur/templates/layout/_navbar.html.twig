@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        {% if app.request.attributes.get('_route') != 'login' %}
+            <a href="{{ path('dashboard') }}" class="btn btn-light me-3">&larr; Retour</a>
+        {% endif %}
+        <div class="flex-grow-1 text-center">
+            <a class="navbar-brand mx-auto" href="{{ path('dashboard') }}">
+                Apptuteur
+            </a>
+        </div>
+        <div>
+            <ul class="navbar-nav ms-auto">
+                {% if app.session.get('tuteur_id') %}
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ path('etudiants') }}">Étudiants</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ path('logout') }}">Déconnexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</nav>

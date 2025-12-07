@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container py-4">
+
+    <h1 class="mb-4 text-primary">Modifier la visite</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST" class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label">Date :</label>
+                    <input type="date"
+                           name="date"
+                           value="{{ visite.date|date('Y-m-d') }}"
+                           class="form-control"
+                           required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Statut :</label>
+                    <select name="statut" class="form-select">
+                        <option value="prévue"    {{ visite.statut == 'prévue' ? 'selected' }}>Prévue</option>
+                        <option value="réalisée"  {{ visite.statut == 'réalisée' ? 'selected' }}>Réalisée</option>
+                        <option value="annulée"   {{ visite.statut == 'annulée' ? 'selected' }}>Annulée</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Commentaire :</label>
+                    <textarea name="commentaire" class="form-control" rows="3">{{ visite.commentaire }}</textarea>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Compte-rendu :</label>
+                    <textarea name="compteRendu" class="form-control" rows="4">{{ visite.compteRendu }}</textarea>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

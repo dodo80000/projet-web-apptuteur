@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="py-4">
+
+    <h1 class="mb-4 text-primary">Bienvenue sur votre tableau de bord</h1>
+
+    <div class="alert alert-info">
+        Connecté en tant que <strong>{{ tuteur.prenom }} {{ tuteur.nom }}</strong>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <strong>Étudiants suivis</strong>
+        </div>
+
+        <div class="card-body">
+            <a href="{{ path('etudiants_ajouter') }}" class="btn btn-success mb-3">
+                Ajouter un étudiant
+            </a>
+
+            {% if tuteur.etudiants is not empty %}
+                <ul class="list-group">
+                    {% for e in tuteur.etudiants %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ e.prenom }} {{ e.nom }}</strong>
+                                — <span class="badge bg-secondary">{{ e.formation }}</span>
+                            </div>
+                            <a href="{{ path('visites_etudiant', { id: e.id }) }}" class="btn btn-outline-primary btn-sm">
+                                Voir visites
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucun étudiant suivi.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning">
+            <strong>Prochaines visites planifiées</strong>
+        </div>
+
+        <div class="card-body">
+            {% if visites is not empty %}
+                <ul class="list-group">
+                    {% for v in visites %}
+                        <li class="list-group-item">
+                            <strong>{{ v.date|date('d/m/Y H:i') }}</strong> — {{ v.commentaire }}
+                            {% if v.etudiant %}
+                                <span class="text-muted">
+                                    ({{ v.etudiant.prenom }} {{ v.etudiant.nom }})
+                                </span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucune visite planifiée.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

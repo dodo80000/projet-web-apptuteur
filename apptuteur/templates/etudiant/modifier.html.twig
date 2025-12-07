@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier étudiant{% endblock %}
+
+{% block body %}
+
+<h1 class="mb-4">Modifier {{ etudiant.prenom }} {{ etudiant.nom }}</h1>
+
+<div class="card p-4 shadow-sm">
+
+    <form method="POST">
+
+        <div class="mb-3">
+            <label class="form-label" for="nom">Nom :</label>
+            <input 
+                type="text" 
+                id="nom" 
+                name="nom" 
+                class="form-control"
+                value="{{ etudiant.nom }}" 
+                required
+            >
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="prenom">Prénom :</label>
+            <input 
+                type="text" 
+                id="prenom" 
+                name="prenom" 
+                class="form-control"
+                value="{{ etudiant.prenom }}" 
+                required
+            >
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="formation">Formation :</label>
+            <input 
+                type="text" 
+                id="formation" 
+                name="formation" 
+                class="form-control"
+                value="{{ etudiant.formation }}" 
+                required
+            >
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Mettre à jour
+        </button>
+
+        <a href="{{ path('etudiants') }}" class="btn btn-secondary ms-2">
+            Annuler
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

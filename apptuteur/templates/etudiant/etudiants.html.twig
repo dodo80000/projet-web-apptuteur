@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1 class="mb-3">Étudiants suivis</h1>
+
+<a href="{{ path('etudiants_ajouter') }}" class="btn btn-success mb-3">Ajouter un étudiant</a>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-primary">
+        <tr>
+            <th>Nom</th>
+            <th>Formation</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for e in etudiants %}
+        <tr>
+            <td>{{ e.prenom }} {{ e.nom }}</td>
+            <td>{{ e.formation }}</td>
+
+            <td>
+                <a href="{{ path('visites_etudiant', { id: e.id }) }}" class="btn btn-info btn-sm">Visites</a>
+                <a href="{{ path('visites_ajouter', { id: e.id }) }}" class="btn btn-warning btn-sm">Ajouter visite</a>
+                <a href="{{ path('etudiants_modifier', { id: e.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
+
+                <a href="#"
+                   class="btn btn-danger btn-sm btn-delete-etudiant"
+                   data-url="{{ path('etudiants_supprimer', { id: e.id, _token: csrf_token('delete_etudiant_' ~ e.id) }) }}">
+                    Supprimer
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.querySelectorAll('.btn-delete-etudiant');
+            buttons.forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var url = this.getAttribute('data-url');
+
+                    Swal.fire({
+                        title: 'Supprimer cet étudiant ?',
+                        text: 'Cette action est irréversible.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Oui, supprimer',
+                        cancelButtonText: 'Annuler'
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}
